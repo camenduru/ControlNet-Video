@@ -38,7 +38,7 @@ from model import Model
 model = Model()
 
 
-def controlnet(i, prompt, seed_in):
+def controlnet(i, prompt, control_task, seed_in):
     img= Image.open(i)
     np_img = np.array(img)
     
@@ -50,11 +50,18 @@ def controlnet(i, prompt, seed_in):
     ddim_steps = 20
     scale = 9.0
     eta = 0.0
-    
-    result = model.process_pose(np_img, prompt, a_prompt, n_prompt, num_samples,
+    if control_task == 'Canny':
+        result = model.process_canny(np_img, prompt, a_prompt, n_prompt, num_samples,
+                image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
+    elif control_task == 'Depth':
+        result = model.process_depth(np_img, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
-    print(result[0])
-    im = Image.fromarray(result[0])
+    elif control_task == 'Pose':
+        result = model.process_pose(np_img, prompt, a_prompt, n_prompt, num_samples,
+            image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
+    
+    #print(result[0])
+    im = Image.fromarray(result[1])
     im.save("your_file" + str(i) + ".jpeg")
     return "your_file" + str(i) + ".jpeg"
 
@@ -105,7 +112,7 @@ def create_video(frames, fps):
     return 'movie.mp4'
 
 
-def infer(prompt,video_in, seed_in, trim_value):
+def infer(prompt,video_in, control_task, seed_in, trim_value):
     print(f"""
     ———————————————
     {prompt}
@@ -126,7 +133,7 @@ def infer(prompt,video_in, seed_in, trim_value):
     print("set stop frames to: " + str(n_frame))
     
     for i in frames_list[0:int(n_frame)]:
-        controlnet_img = controlnet(i, prompt, seed_in)
+        controlnet_img = controlnet(i, prompt,control_task, seed_in)
         #images = controlnet_img[0]
         #rgb_im = images[0].convert("RGB")
   
@@ -191,6 +198,7 @@ with gr.Blocks(css='style.css') as demo:
             with gr.Column():
                 video_inp = gr.Video(label="Video source", source="upload", type="filepath", elem_id="input-vid")
                 prompt = gr.Textbox(label="Prompt", placeholder="enter prompt", show_label=False, elem_id="prompt-in")
+                control_task = gr.Dropdown(["Canny", "Depth", "Pose"], value=["Pose"], multiselect=False),
                 with gr.Row():
                     seed_inp = gr.Slider(label="Seed", minimum=0, maximum=2147483647, step=1, value=123456)
                     trim_in = gr.Slider(label="Cut video at (s)", minimun=1, maximum=5, step=1, value=1)
@@ -208,7 +216,7 @@ with gr.Blocks(css='style.css') as demo:
                     loading_icon = gr.HTML(loading_icon_html)
                     share_button = gr.Button("Share to community", elem_id="share-btn")
         
-        inputs = [prompt,video_inp,seed_inp, trim_in]
+        inputs = [prompt,video_inp,control_task, seed_inp, trim_in]
         outputs = [video_out, share_group]
         #outputs = [status]
         
