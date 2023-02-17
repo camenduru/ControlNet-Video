@@ -53,7 +53,7 @@ def controlnet(i, prompt, control_task, seed_in, ddim_steps, scale):
     
     if control_task == 'Canny':
         result = model.process_canny(np_img, prompt, a_prompt, n_prompt, num_samples,
-                image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta, low_threshold, high_threshold)
+                image_resolution, ddim_steps, scale, seed_in, eta, low_threshold, high_threshold)
     elif control_task == 'Depth':
         result = model.process_depth(np_img, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
