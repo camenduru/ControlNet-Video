@@ -1,6 +1,6 @@
 ---
-title: ControlNet
-emoji: 🌖
+title: ControlNet-Video
+emoji: 🕹
 colorFrom: pink
 colorTo: blue
 sdk: gradio
