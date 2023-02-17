@@ -39,6 +39,9 @@ model = Model()
 
 
 def controlnet(i, prompt, seed_in):
+    img= Image.open(i)
+    np_img = np.array(img)
+    
     a_prompt = "best quality, extremely detailed"
     n_prompt = "longbody, lowres, bad anatomy, bad hands, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality"
     num_samples = 1
@@ -48,7 +51,7 @@ def controlnet(i, prompt, seed_in):
     scale = 9.0
     eta = 0.0
     
-    result = model.process_pose(i, prompt, a_prompt, n_prompt, num_samples,
+    result = model.process_pose(np_img, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
     print(result)
     return 'done'
