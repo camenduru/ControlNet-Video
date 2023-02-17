@@ -53,8 +53,10 @@ def controlnet(i, prompt, seed_in):
     
     result = model.process_pose(np_img, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
-    print(result)
-    return 'done'
+    print(result[0])
+    im = Image.fromarray(result[0])
+    im.save(f"your_file" + {i} + ".jpeg")
+    return f"your_file" + {i} + ".jpeg"
 
 
 def get_frames(video_in):
@@ -130,14 +132,14 @@ def infer(prompt,video_in, seed_in, trim_value):
   
         # exporting the image
         #rgb_im.save(f"result_img-{i}.jpg")
-        #result_frames.append(f"result_img-{i}.jpg")
-        #print("frame " + i + "/" + str(n_frame) + ": done;")
+        result_frames.append(controlnet_img)
+        print("frame " + i + "/" + str(n_frame) + ": done;")
 
-    #final_vid = create_video(result_frames, fps)
+    final_vid = create_video(result_frames, fps)
     print("finished !")
     
-    #return final_vid, gr.Group.update(visible=True)
-    return controlnet_img
+    return final_vid, gr.Group.update(visible=True)
+    #return controlnet_img
 
 title = """
     <div style="text-align: center; max-width: 700px; margin: 0 auto;">
@@ -194,7 +196,7 @@ with gr.Blocks(css='style.css') as demo:
                     seed_inp = gr.Slider(label="Seed", minimum=0, maximum=2147483647, step=1, value=123456)
                     trim_in = gr.Slider(label="Cut video at (s)", minimun=1, maximum=5, step=1, value=1)
             with gr.Column():
-                status = gr.Textbox()
+                #status = gr.Textbox()
                 video_out = gr.Video(label="Pix2pix video result", elem_id="video-output")
                 gr.HTML("""
                 <a style="display:inline-block" href="https://huggingface.co/spaces/fffiloni/Pix2Pix-Video?duplicate=true"><img src="https://img.shields.io/badge/-Duplicate%20Space-blue?labelColor=white&style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAP5JREFUOE+lk7FqAkEURY+ltunEgFXS2sZGIbXfEPdLlnxJyDdYB62sbbUKpLbVNhyYFzbrrA74YJlh9r079973psed0cvUD4A+4HoCjsA85X0Dfn/RBLBgBDxnQPfAEJgBY+A9gALA4tcbamSzS4xq4FOQAJgCDwV2CPKV8tZAJcAjMMkUe1vX+U+SMhfAJEHasQIWmXNN3abzDwHUrgcRGmYcgKe0bxrblHEB4E/pndMazNpSZGcsZdBlYJcEL9Afo75molJyM2FxmPgmgPqlWNLGfwZGG6UiyEvLzHYDmoPkDDiNm9JR9uboiONcBXrpY1qmgs21x1QwyZcpvxt9NS09PlsPAAAAAElFTkSuQmCC&logoWidth=14" alt="Duplicate Space"></a> 
@@ -208,8 +210,8 @@ with gr.Blocks(css='style.css') as demo:
                     share_button = gr.Button("Share to community", elem_id="share-btn")
         
         inputs = [prompt,video_inp,seed_inp, trim_in]
-        #outputs = [video_out, share_group]
-        outputs = [status]
+        outputs = [video_out, share_group]
+        #outputs = [status]
         
         
         gr.HTML(article)
