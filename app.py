@@ -55,8 +55,8 @@ def controlnet(i, prompt, seed_in):
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
     print(result[0])
     im = Image.fromarray(result[0])
-    im.save(f"your_file" + {i} + ".jpeg")
-    return f"your_file" + {i} + ".jpeg"
+    im.save("your_file" + str(i) + ".jpeg")
+    return "your_file" + str(i) + ".jpeg"
 
 
 def get_frames(video_in):
@@ -152,11 +152,11 @@ title = """
         "
         >
         <h1 style="font-weight: 900; margin-bottom: 7px; margin-top: 5px;">
-            Pix2Pix Video
+            ControlNet Video
         </h1>
         </div>
         <p style="margin-bottom: 10px; font-size: 94%">
-        Apply Instruct Pix2Pix Diffusion to a video 
+        Apply ControlNet to a video 
         </p>
     </div>
 """
@@ -165,7 +165,6 @@ article = """
     
     <div class="footer">
         <p>
-        Examples by <a href="https://twitter.com/CitizenPlain" target="_blank">Nathan Shipley</a> •&nbsp;
         Follow <a href="https://twitter.com/fffiloni" target="_blank">Sylvain Filoni</a> for future updates 🤗
         </p>
     </div>
