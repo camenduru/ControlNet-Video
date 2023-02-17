@@ -38,7 +38,7 @@ from model import Model
 model = Model()
 
 
-def controlnet(i, prompt, control_task, seed_in):
+def controlnet(i, prompt, control_task, seed_in, ddim_steps, scale):
     img= Image.open(i)
     np_img = np.array(img)
     
@@ -47,12 +47,13 @@ def controlnet(i, prompt, control_task, seed_in):
     num_samples = 1
     image_resolution = 512
     detect_resolution = 512
-    ddim_steps = 20
-    scale = 9.0
     eta = 0.0
+    low_threshold = 100
+    high_threshold = 200
+    
     if control_task == 'Canny':
         result = model.process_canny(np_img, prompt, a_prompt, n_prompt, num_samples,
-                image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
+                image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta, low_threshold, high_threshold)
     elif control_task == 'Depth':
         result = model.process_depth(np_img, prompt, a_prompt, n_prompt, num_samples,
             image_resolution, detect_resolution, ddim_steps, scale, seed_in, eta)
@@ -112,7 +113,7 @@ def create_video(frames, fps):
     return 'movie.mp4'
 
 
-def infer(prompt,video_in, control_task, seed_in, trim_value):
+def infer(prompt,video_in, control_task, seed_in, trim_value, ddim_steps, scale):
     print(f"""
     ———————————————
     {prompt}
@@ -133,7 +134,7 @@ def infer(prompt,video_in, control_task, seed_in, trim_value):
     print("set stop frames to: " + str(n_frame))
     
     for i in frames_list[0:int(n_frame)]:
-        controlnet_img = controlnet(i, prompt,control_task, seed_in)
+        controlnet_img = controlnet(i, prompt,control_task, seed_in, ddim_steps, scale)
         #images = controlnet_img[0]
         #rgb_im = images[0].convert("RGB")
   
@@ -204,11 +205,21 @@ with gr.Blocks(css='style.css') as demo:
                     share_button = gr.Button("Share to community", elem_id="share-btn")
             with gr.Column():
                 #status = gr.Textbox()
-                prompt = gr.Textbox(label="Prompt", placeholder="enter prompt", show_label=False, elem_id="prompt-in")
+                prompt = gr.Textbox(label="Prompt", placeholder="enter prompt", show_label=True, elem_id="prompt-in")
                 control_task = gr.Dropdown(label="Control Task", choices=["Canny", "Depth", "Pose"], value="Pose", multiselect=False)
                 with gr.Row():
                     seed_inp = gr.Slider(label="Seed", minimum=0, maximum=2147483647, step=1, value=123456)
                     trim_in = gr.Slider(label="Cut video at (s)", minimun=1, maximum=5, step=1, value=1)
+                    ddim_steps = gr.Slider(label='Steps',
+                                           minimum=1,
+                                           maximum=100,
+                                           value=20,
+                                           step=1)
+                    scale = gr.Slider(label='Guidance Scale',
+                                      minimum=0.1,
+                                      maximum=30.0,
+                                      value=9.0,
+                                      step=0.1)
                 gr.HTML("""
                 <a style="display:inline-block" href="https://huggingface.co/spaces/fffiloni/Pix2Pix-Video?duplicate=true"><img src="https://img.shields.io/badge/-Duplicate%20Space-blue?labelColor=white&style=flat&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAP5JREFUOE+lk7FqAkEURY+ltunEgFXS2sZGIbXfEPdLlnxJyDdYB62sbbUKpLbVNhyYFzbrrA74YJlh9r079973psed0cvUD4A+4HoCjsA85X0Dfn/RBLBgBDxnQPfAEJgBY+A9gALA4tcbamSzS4xq4FOQAJgCDwV2CPKV8tZAJcAjMMkUe1vX+U+SMhfAJEHasQIWmXNN3abzDwHUrgcRGmYcgKe0bxrblHEB4E/pndMazNpSZGcsZdBlYJcEL9Afo75molJyM2FxmPgmgPqlWNLGfwZGG6UiyEvLzHYDmoPkDDiNm9JR9uboiONcBXrpY1qmgs21x1QwyZcpvxt9NS09PlsPAAAAAElFTkSuQmCC&logoWidth=14" alt="Duplicate Space"></a> 
                 work with longer videos / skip the queue: 
@@ -217,7 +228,7 @@ with gr.Blocks(css='style.css') as demo:
 
                 
         
-        inputs = [prompt,video_inp,control_task, seed_inp, trim_in]
+        inputs = [prompt,video_inp,control_task, seed_inp, trim_in, ddim_steps, scale]
         outputs = [video_out, share_group]
         #outputs = [status]
         
