@@ -210,16 +210,16 @@ with gr.Blocks(css='style.css') as demo:
                 with gr.Row():
                     seed_inp = gr.Slider(label="Seed", minimum=0, maximum=2147483647, step=1, value=123456)
                     trim_in = gr.Slider(label="Cut video at (s)", minimun=1, maximum=5, step=1, value=1)
-                    ddim_steps = gr.Slider(label='Steps',
-                                           minimum=1,
-                                           maximum=100,
-                                           value=20,
-                                           step=1)
-                    scale = gr.Slider(label='Guidance Scale',
-                                      minimum=0.1,
-                                      maximum=30.0,
-                                      value=9.0,
-                                      step=0.1)
+                ddim_steps = gr.Slider(label='Steps',
+                                       minimum=1,
+                                       maximum=100,
+                                       value=20,
+                                       step=1)
+                scale = gr.Slider(label='Guidance Scale',
+                                  minimum=0.1,
+                                  maximum=30.0,
+                                  value=9.0,
+                                  step=0.1)
                 
                 submit_btn = gr.Button("Generate Pix2Pix video")
                 gr.HTML("""
