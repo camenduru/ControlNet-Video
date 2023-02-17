@@ -198,7 +198,7 @@ with gr.Blocks(css='style.css') as demo:
             with gr.Column():
                 video_inp = gr.Video(label="Video source", source="upload", type="filepath", elem_id="input-vid")
                 prompt = gr.Textbox(label="Prompt", placeholder="enter prompt", show_label=False, elem_id="prompt-in")
-                control_task = gr.Dropdown(label="Control Task", choices=["Canny", "Depth", "Pose"], value=["Pose"], multiselect=False),
+                control_task = gr.Dropdown(label="Control Task", choices=["Canny", "Depth", "Pose"], value=["Pose"], multiselect=False)
                 with gr.Row():
                     seed_inp = gr.Slider(label="Seed", minimum=0, maximum=2147483647, step=1, value=123456)
                     trim_in = gr.Slider(label="Cut video at (s)", minimun=1, maximum=5, step=1, value=1)
