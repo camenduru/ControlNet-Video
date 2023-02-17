@@ -180,9 +180,9 @@ article = """
         <p>You may also like: </p>
         <div id="may-like-content" style="display:flex;flex-wrap: wrap;align-items:center;height:20px;">
             
-            <svg height="20" width="162" style="margin-left:4px;margin-bottom: 6px;">       
-                 <a href="https://huggingface.co/spaces/timbrooks/instruct-pix2pix" target="_blank">
-                    <image href="https://img.shields.io/badge/🤗 Spaces-Instruct_Pix2Pix-blue" src="https://img.shields.io/badge/🤗 Spaces-Instruct_Pix2Pix-blue.png" height="20"/>
+            <svg height="20" width="148" style="margin-left:4px;margin-bottom: 6px;">       
+                 <a href="https://huggingface.co/spaces/fffiloni/Pix2Pix-Video" target="_blank">
+                    <image href="https://img.shields.io/badge/🤗 Spaces-Pix2Pix_Video-blue" src="https://img.shields.io/badge/🤗 Spaces-Pix2Pix_Video-blue.png" height="20"/>
                  </a>
             </svg>
             
