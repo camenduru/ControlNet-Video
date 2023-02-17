@@ -1,3 +1,101 @@
-h1 {
+#col-container {max-width: 820px; margin-left: auto; margin-right: auto;}
+#duplicate-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  line-height: 1em;
+  flex-direction: row-reverse;
+  font-size:1em;
+}
+a, a:hover, a:visited {
+  text-decoration-line: underline; 
+  font-weight: 600;
+  color: #1f2937 !important;
+}
+
+.dark a, .dark a:hover, .dark a:visited {
+  color: #f3f4f6 !important;
+}
+
+.footer {
+  margin-bottom: 45px;
+  margin-top: 10px;
   text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.footer>p {
+  font-size: .8rem!important;
+  display: inline-block;
+  padding: 0 10px;
+  transform: translateY(26px);
+  background: white;
+}
+.dark .footer {
+  border-color: #303030;
+}
+.dark .footer>p {
+  background: #0b0f19;
+}
+
+div#may-like-container > p {
+  font-size: .8em;
+  margin-bottom: 4px;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+#share-btn-container {
+  display: flex; 
+  padding-left: 0.5rem !important; 
+  padding-right: 0.5rem !important; 
+  background-color: #000000; 
+  justify-content: center; 
+  align-items: center; 
+  border-radius: 9999px !important; 
+  max-width: 13rem;
+}
+
+#share-btn-container:hover {
+  background-color: #060606;
+}
+
+#share-btn {
+  all: initial; 
+  color: #ffffff;
+  font-weight: 600; 
+  cursor:pointer; 
+  font-family: 'IBM Plex Sans', sans-serif; 
+  margin-left: 0.5rem !important; 
+  padding-top: 0.5rem !important; 
+  padding-bottom: 0.5rem !important;
+  right:0;
+}
+
+#share-btn * {
+  all: unset;
+}
+
+#share-btn-container div:nth-child(-n+2){
+  width: auto !important;
+  min-height: 0px !important;
+}
+
+#share-btn-container .wrap {
+  display: none !important;
+}
+
+#share-btn-container.hidden {
+  display: none!important;
 }
