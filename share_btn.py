@@ -56,6 +56,7 @@ share_js = """async () => {
     const descriptionMd = `
 #### Video input:
 ${urlInputVid}
+
 #### Pix2Pix result:
 ${dataOutputVid}
 `;
