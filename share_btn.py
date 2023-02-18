@@ -57,7 +57,7 @@ share_js = """async () => {
 #### Video input:
 ${urlInputVid}
 
-#### Pix2Pix result:
+#### ControlNet result:
 ${dataOutputVid}
 `;
     const params = new URLSearchParams({
